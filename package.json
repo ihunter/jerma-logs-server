@@ -1,0 +1,28 @@
+{
+  "name": "jerma-logs-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihunter/jerma-logs-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ihunter/jerma-logs-server/issues"
+  },
+  "homepage": "https://github.com/ihunter/jerma-logs-server#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "firebase-admin": "^8.11.0",
+    "tmi.js": "^1.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
