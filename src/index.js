@@ -21,6 +21,7 @@ client.on('message', onMessageHandler)
 // Connect to Twitch
 client.connect()
 
+// On message handler
 function onMessageHandler (channel, tags, message, self) {
   logMessage(tags, message)
 }
@@ -40,6 +41,20 @@ async function logMessage (tags, message) {
       userID: tags['user-id'],
       username: tags['username'],
       sentAt: tags['tmi-sent-ts'],
+      badgeInfo: tags['badge-info'],
+      badges: tags['badges'],
+      color: tags['color'],
+      emotes: tags['emotes'],
+      flags: tags['flags'],
+      mod: tags['mod'],
+      roomID: tags['room-id'],
+      subscriber: tags['subscriber'],
+      turbo: tags['turbo'],
+      userType: tags['user-type'],
+      emotesRaw: tags['emotes-raw'],
+      badgeInfoRaw: tags['badge-info-raw'],
+      badgesRaw: tags['badges-raw'],
+      messageType: tags['message-type'],
       message: message
     })
   } catch (error) {
