@@ -1,6 +1,7 @@
 require('dotenv').config()
 const tmi = require('tmi.js')
-const { db } = require('./db')
+const moment = require('moment')
+const { admin, db } = require('./db')
 
 // Create a client with options
 const client = new tmi.client({
@@ -33,55 +34,54 @@ async function logMessage (tags, message) {
   if (!usernames.includes(tags.username)) return
 
   const messagesCollectionRef = db.collection('messages')
+  const messagesByMonthCollectionRef = db.collection('messagesByMonth')
+
+  const messageData = {
+    id: tags['id'],
+    displayName: tags['display-name'],
+    userID: tags['user-id'],
+    username: tags['username'],
+    sentAt: tags['tmi-sent-ts'],
+    badgeInfo: tags['badge-info'],
+    badges: tags['badges'],
+    color: tags['color'],
+    emotes: tags['emotes'],
+    flags: tags['flags'],
+    mod: tags['mod'],
+    roomID: tags['room-id'],
+    subscriber: tags['subscriber'],
+    turbo: tags['turbo'],
+    userType: tags['user-type'],
+    emotesRaw: tags['emotes-raw'],
+    badgeInfoRaw: tags['badge-info-raw'],
+    badgesRaw: tags['badges-raw'],
+    messageType: tags['message-type'],
+    message: message
+  }
 
   try {
-    await messagesCollectionRef.doc(tags.id).set({
-      id: tags['id'],
-      displayName: tags['display-name'],
-      userID: tags['user-id'],
-      username: tags['username'],
-      sentAt: tags['tmi-sent-ts'],
-      badgeInfo: tags['badge-info'],
-      badges: tags['badges'],
-      color: tags['color'],
-      emotes: tags['emotes'],
-      flags: tags['flags'],
-      mod: tags['mod'],
-      roomID: tags['room-id'],
-      subscriber: tags['subscriber'],
-      turbo: tags['turbo'],
-      userType: tags['user-type'],
-      emotesRaw: tags['emotes-raw'],
-      badgeInfoRaw: tags['badge-info-raw'],
-      badgesRaw: tags['badges-raw'],
-      messageType: tags['message-type'],
-      message: message
-    })
-  } catch (error) {
-    console.log('Error saving to firebase:', error)
-  } finally {
+    await messagesCollectionRef.doc(tags.id).set(messageData)
     console.log('Message Saved Successfully')
+  } catch (error) {
+    console.log('Error saving message:', error)
+  }
+
+  try {
+    const dateYearMonth = moment(+messageData.sentAt).format('MMMM-YYYY')
+    const groupDoc = await messagesByMonthCollectionRef.doc(dateYearMonth).get()
+
+    if (groupDoc.exists) {
+      await messagesByMonthCollectionRef.doc(dateYearMonth).update({
+        messages: admin.firestore.FieldValue.arrayUnion(messageData)
+      })
+    } else {
+      await messagesByMonthCollectionRef.doc(dateYearMonth).set({
+        messages: admin.firestore.FieldValue.arrayUnion(messageData)
+      })
+    }
+
+    console.log('Message Grouped Successfully')
+  } catch (error) {
+    console.log('Error grouping message:', error)
   }
 }
-
-// {
-//   'badge-info': null,
-//   badges: { broadcaster: '1', premium: '1' },
-//   color: '#1E90FF',
-//   'display-name': 'ModusPwnens',
-//   emotes: null,
-//   flags: null,
-//   id: 'e1ed2752-41c2-4543-9e9c-00ba48f491b9',
-//   mod: false,
-//   'room-id': '42521344',
-//   subscriber: false,
-//   'tmi-sent-ts': '1588302664175',
-//   turbo: false,
-//   'user-id': '42521344',
-//   'user-type': null,
-//   'emotes-raw': null,
-//   'badge-info-raw': null,
-//   'badges-raw': 'broadcaster/1,premium/1',
-//   username: 'moduspwnens',
-//   'message-type': 'chat'
-// }

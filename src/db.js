@@ -12,3 +12,5 @@ admin.initializeApp({
 })
 
 module.exports.db = admin.firestore()
+module.exports.admin = admin
+
