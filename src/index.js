@@ -6,9 +6,9 @@ const { admin, db } = require('./db')
 // Create a client with options
 const client = new tmi.client({
   connection: {
-		secure: true,
-		reconnect: true
-	},
+    secure: true,
+    reconnect: true
+  },
   identity: {
     username: process.env.BOT_USERNAME,
     password: process.env.OAUTH_TOKEN
