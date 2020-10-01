@@ -79,7 +79,7 @@ async function logMessage (tags, message) {
         messages: admin.firestore.FieldValue.arrayUnion(messageData)
       })
     }
-
+    console.log(`${+messageData.sentAt} | ${dateYearMonth}`)
     console.log('Message Grouped Successfully')
   } catch (error) {
     console.log('Error grouping message:', error)
