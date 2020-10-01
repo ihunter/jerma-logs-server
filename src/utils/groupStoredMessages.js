@@ -9,9 +9,7 @@ async function groupStoredMessages () {
   try {
     const messagesSnapshot = await messagesCollectionRef.get()
 
-    let count = 0
     messagesSnapshot.forEach(async messageDoc => {
-      count += 1
       const messageData = messageDoc.data()
       const dateYearMonth = moment(+messageData.sentAt).format('MMMM-YYYY')
       
@@ -27,13 +25,10 @@ async function groupStoredMessages () {
             messages: admin.firestore.FieldValue.arrayUnion(messageData)
           })
         }
-    
-        console.log('Message Grouped Successfully')
       } catch (error) {
         console.log('Error grouping message:', error)
       }
     })
-    console.log(count)
   } catch (error) {
     console.log('Error fetching messages:', error)
   }
