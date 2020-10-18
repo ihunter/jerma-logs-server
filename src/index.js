@@ -13,7 +13,7 @@ const client = new tmi.client({
     username: process.env.BOT_USERNAME,
     password: process.env.OAUTH_TOKEN
   },
-  channels: process.env.CHANNELS.split(',')
+  channels: [process.env.CHANNEL]
 })
 
 // Register event handlers
@@ -29,9 +29,9 @@ function onMessageHandler (channel, tags, message, self) {
 
 // Log messages to firebase firestore
 async function logMessage (tags, message) {
-  const usernames = process.env.CHANNELS.split(',')
+  const username = process.env.USER
 
-  if (!usernames.includes(tags.username)) return
+  if (username !== tags.username) return
 
   const messagesCollectionRef = db.collection('messages')
   const messagesByMonthCollectionRef = db.collection('messagesByMonth')
