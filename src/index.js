@@ -1,7 +1,7 @@
 require('dotenv').config()
 const tmi = require('tmi.js')
 const moment = require('moment')
-const { admin, db } = require('./db')
+const { admin, db, firebase, debtDB } = require('./db')
 
 // Create a client with options
 const client = new tmi.client({
@@ -18,13 +18,23 @@ const client = new tmi.client({
 
 // Register event handlers
 client.on('message', onMessageHandler)
+client.on('subgift',  onSubGiftHandler)
+client.on('submysterygift',  onSubMysteryGiftHandler)
 
 // Connect to Twitch
 client.connect()
 
-// On message handler
+// Event handlers
 function onMessageHandler (channel, tags, message, self) {
   logMessage(tags, message)
+}
+
+function onSubGiftHandler (channel, username, streakMonths, recipient, methods, userstate) {
+  logGiftSubsByJerma(username, 1)
+}
+
+function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
+  logGiftSubsByJerma(username, numbOfSubs)
 }
 
 // Log messages to firebase firestore
@@ -83,5 +93,17 @@ async function logMessage (tags, message) {
     console.log('Message Grouped Successfully')
   } catch (error) {
     console.log('Error grouping message:', error)
+  }
+}
+
+async function logGiftSubsByJerma (username, numbOfSubs) {
+  if (process.env.USER !== username) return
+
+  try {
+    await debtDB
+      .ref('/totalsubs')
+      .set(firebase.database.ServerValue.increment(numbOfSubs))
+  } catch (error) {
+    console.log('Error incrementing gift sub count', error)
   }
 }

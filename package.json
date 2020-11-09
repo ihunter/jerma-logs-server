@@ -20,6 +20,7 @@
   "homepage": "https://github.com/ihunter/jerma-logs-server#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "firebase": "^8.0.1",
     "firebase-admin": "^9.2.0",
     "moment": "^2.29.1",
     "tmi.js": "^1.5.0"
