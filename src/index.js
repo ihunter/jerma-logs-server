@@ -19,22 +19,17 @@ const client = new tmi.client({
 // Register event handlers
 client.on('message', onMessageHandler)
 client.on('subgift',  onSubGiftHandler)
-client.on('submysterygift',  onSubMysteryGiftHandler)
 
 // Connect to Twitch
 client.connect()
 
 // Event handlers
 function onMessageHandler (channel, tags, message, self) {
-  logMessage(tags, message)
+  // logMessage(tags, message)
 }
 
 function onSubGiftHandler (channel, username, streakMonths, recipient, methods, userstate) {
   logGiftSubsByJerma(username, 1)
-}
-
-function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
-  logGiftSubsByJerma(username, numbOfSubs)
 }
 
 // Log messages to firebase firestore
