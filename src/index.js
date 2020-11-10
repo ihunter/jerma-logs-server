@@ -25,7 +25,7 @@ client.connect()
 
 // Event handlers
 function onMessageHandler (channel, tags, message, self) {
-  // logMessage(tags, message)
+  logMessage(tags, message)
 }
 
 function onSubGiftHandler (channel, username, streakMonths, recipient, methods, userstate) {
