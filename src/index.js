@@ -21,6 +21,19 @@ client.on('message', onMessageHandler)
 client.on('subgift',  onSubGiftHandler)
 client.on('submysterygift',  onSubMysteryGiftHandler)
 
+// Connection events
+client.on('connecting', (address, port) => {
+  console.log('Connecting:', address, port)
+})
+
+client.on('connected', (address, port) => {
+  console.log('Connected:', address, port)
+})
+
+client.on('disconnected', (reason) => {
+  console.log('Disconnected:', reason)
+})
+
 // Connect to Twitch
 client.connect()
 
