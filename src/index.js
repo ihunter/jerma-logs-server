@@ -19,7 +19,7 @@ const client = new tmi.client({
 // Register event handlers
 client.on('message', onMessageHandler)
 client.on('subgift',  onSubGiftHandler)
-// client.on('submysterygift',  onSubMysteryGiftHandler)
+client.on('submysterygift',  onSubMysteryGiftHandler)
 
 // Connect to Twitch
 client.connect()
@@ -30,12 +30,13 @@ function onMessageHandler (channel, tags, message, self) {
 }
 
 function onSubGiftHandler (channel, username, streakMonths, recipient, methods, userstate) {
+  console.log('Gift Sub:', username)
   logGiftSubsByJerma(username, 1)
 }
 
-// function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
-//   logGiftSubsByJerma(username, numbOfSubs)
-// }
+function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
+  console.log('Mystery Gift Sub:', username, numbOfSubs)
+}
 
 // Log messages to firebase firestore
 async function logMessage (tags, message) {
@@ -98,11 +99,13 @@ async function logMessage (tags, message) {
 
 async function logGiftSubsByJerma (username, numbOfSubs) {
   if (process.env.USER !== username) return
+  console.log('Logging Jerma Gift Sub')
 
   try {
     await debtDB
       .ref('/totalsubs')
       .set(firebase.database.ServerValue.increment(numbOfSubs))
+    console.log('Gift Sub Logged Successfully')
   } catch (error) {
     console.log('Error incrementing gift sub count', error)
   }
