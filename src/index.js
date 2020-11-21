@@ -89,9 +89,8 @@ async function logMessage (tags, message) {
 
   try {
     await messagesCollectionRef.doc(tags.id).set(messageData)
-    console.log('Message Saved Successfully')
   } catch (error) {
-    console.log('Error saving message:', error)
+    console.log('Error Saving Message:', error)
   }
 
   try {
@@ -107,10 +106,8 @@ async function logMessage (tags, message) {
         messages: admin.firestore.FieldValue.arrayUnion(messageData)
       })
     }
-    console.log(`${+messageData.sentAt} | ${dateYearMonth}`)
-    console.log('Message Grouped Successfully')
   } catch (error) {
-    console.log('Error grouping message:', error)
+    console.log('Error Grouping Message:', error)
   }
 }
 
