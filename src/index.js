@@ -34,6 +34,10 @@ client.on('disconnected', (reason) => {
   console.log('Disconnected:', reason)
 })
 
+client.on("reconnect", () => {
+  console.log('Attempting to reconnect')
+})
+
 // Connect to Twitch
 client.connect()
 
