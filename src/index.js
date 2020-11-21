@@ -112,7 +112,7 @@ async function logMessage (tags, message) {
 }
 
 async function logGiftSubsByJerma (username, numbOfSubs) {
-  if (process.env.USER !== username) return
+  if (process.env.USER !== username.toLowerCase()) return
   console.log('Logging Jerma Gift Sub')
 
   try {
