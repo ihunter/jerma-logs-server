@@ -47,12 +47,12 @@ function onMessageHandler (channel, tags, message, self) {
 }
 
 function onSubGiftHandler (channel, username, streakMonths, recipient, methods, userstate) {
-  console.log('Gift Sub:', username)
+  console.log('Gift Sub:', username.toLowerCase())
   logGiftSubsByJerma(username, 1)
 }
 
 function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
-  console.log('Mystery Gift Sub:', username, numbOfSubs)
+  console.log('Mystery Gift Sub:', username.toLowerCase(), numbOfSubs)
 }
 
 // Log messages to firebase firestore
