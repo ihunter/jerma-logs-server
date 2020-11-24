@@ -47,12 +47,13 @@ function onMessageHandler (channel, tags, message, self) {
 }
 
 function onSubGiftHandler (channel, username, streakMonths, recipient, methods, userstate) {
-  console.log('Gift Sub:', username.toLowerCase())
+  console.log(`${username} gifted a sub to ${userstate['msg-param-recipient-display-name']}`)
   logGiftSubsByJerma(username, 1)
 }
 
 function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
-  console.log('Mystery Gift Sub:', username.toLowerCase(), numbOfSubs)
+  console.log(`${username} gifted ${numbOfSubs} community subs`)
+  console.log(userstate)
 }
 
 // Log messages to firebase firestore
@@ -113,7 +114,7 @@ async function logMessage (tags, message) {
 
 async function logGiftSubsByJerma (username, numbOfSubs) {
   if (process.env.USER !== username.toLowerCase()) return
-  console.log('Logging Jerma Gift Sub')
+  console.log(`Logging Gift Sub From ${username}:`, username.toLowerCase())
 
   try {
     await debtDB
