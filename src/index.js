@@ -53,7 +53,6 @@ function onSubGiftHandler (channel, username, streakMonths, recipient, methods, 
 
 function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
   console.log(`${username} gifted ${numbOfSubs} community subs`)
-  console.log(userstate)
 }
 
 // Log messages to firebase firestore
