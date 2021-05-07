@@ -1,7 +1,7 @@
 require('dotenv').config()
 const tmi = require('tmi.js')
 const moment = require('moment')
-const { admin, db, firebase, debtDB } = require('./db')
+const { admin, db } = require('./db')
 
 // Create a client with options
 const client = new tmi.client({
@@ -18,8 +18,6 @@ const client = new tmi.client({
 
 // Register event handlers
 client.on('message', onMessageHandler)
-client.on('subgift',  onSubGiftHandler)
-client.on('submysterygift',  onSubMysteryGiftHandler)
 
 // Connection events
 client.on('connecting', (address, port) => {
@@ -44,15 +42,6 @@ client.connect()
 // Event handlers
 function onMessageHandler (channel, tags, message, self) {
   logMessage(tags, message)
-}
-
-function onSubGiftHandler (channel, username, streakMonths, recipient, methods, userstate) {
-  console.log(`${username} gifted a sub to ${userstate['msg-param-recipient-display-name']}`)
-  logGiftSubsByJerma(username, 1)
-}
-
-function onSubMysteryGiftHandler (channel, username, numbOfSubs, methods, userstate) {
-  console.log(`${username} gifted ${numbOfSubs} community subs`)
 }
 
 // Log messages to firebase firestore
@@ -108,19 +97,5 @@ async function logMessage (tags, message) {
     }
   } catch (error) {
     console.log('Error Grouping Message:', error)
-  }
-}
-
-async function logGiftSubsByJerma (username, numbOfSubs) {
-  if (process.env.USER !== username.toLowerCase()) return
-  console.log(`Logging Gift Sub From ${username}:`, username.toLowerCase())
-
-  try {
-    await debtDB
-      .ref('/totalsubs')
-      .set(firebase.database.ServerValue.increment(numbOfSubs))
-    console.log('Gift Sub Logged Successfully')
-  } catch (error) {
-    console.log('Error incrementing gift sub count', error)
   }
 }
