@@ -17,7 +17,9 @@ const client = new tmi.client({
 })
 
 // Register event handlers
-client.on('message', onMessageHandler)
+client.on('message', (channel, tags, message, self) => {
+  logMessage(tags, message)
+})
 
 // Connection events
 client.on('connecting', (address, port) => {
@@ -38,11 +40,6 @@ client.on("reconnect", () => {
 
 // Connect to Twitch
 client.connect()
-
-// Event handlers
-function onMessageHandler (channel, tags, message, self) {
-  logMessage(tags, message)
-}
 
 // Log messages to firebase firestore
 async function logMessage (tags, message) {
