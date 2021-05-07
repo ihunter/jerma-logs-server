@@ -2,10 +2,10 @@
   "name": "jerma-logs-server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "group": "node src/utils/groupStoredMessages.js"
   },
   "repository": {

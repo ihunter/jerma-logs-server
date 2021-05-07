@@ -11,5 +11,5 @@ admin.initializeApp({
   databaseURL: "https://jerma-logs.firebaseio.com"
 })
 
-module.exports.db = admin.firestore()
-module.exports.admin = admin
+exports.db = admin.firestore()
+exports.admin = admin
