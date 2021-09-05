@@ -19,13 +19,13 @@
   },
   "homepage": "https://github.com/ihunter/jerma-logs-server#readme",
   "dependencies": {
-    "dotenv": "^9.0.0",
-    "firebase": "^8.5.0",
-    "firebase-admin": "^9.7.0",
+    "dotenv": "^9.0.2",
+    "firebase": "^8.10.0",
+    "firebase-admin": "^9.11.1",
     "moment": "^2.29.1",
-    "tmi.js": "^1.8.3"
+    "tmi.js": "^1.8.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.12"
   }
 }
