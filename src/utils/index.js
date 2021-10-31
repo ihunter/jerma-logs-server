@@ -73,6 +73,9 @@ exports.groupMessageByYearAndMonth = async (tags, message) => {
   const messagesByYearAndMonthCollectionRef = db.collection('messagesByYear').doc(year).collection('messagesByMonth').doc(month)
 
   try {
+    const yearDocRef = db.collection('messagesByYear').doc(year)
+    await yearDocRef.set({ year })
+    
     const groupDoc = await messagesByYearAndMonthCollectionRef.get()
 
     if (groupDoc.exists) {
@@ -121,7 +124,7 @@ exports.groupStoredMessages = async () => {
   }
 }
 
-exports.groupStoredMessagesByYearAndMonth = async () => {
+const groupStoredMessagesByYearAndMonth = async () => {
   const messagesCollectionRef = db.collection('messages')
   try {
     const messagesSnapshot = await messagesCollectionRef.get()
@@ -134,7 +137,10 @@ exports.groupStoredMessagesByYearAndMonth = async () => {
       const messagesByYearCollectionRef = db.collection('messagesByYear').doc(year).collection('messagesByMonth').doc(month)
       
       try {
-        const doc = await messagesByYearCollectionRef.get()
+        const yearDocRef = db.collection('messagesByYear').doc(year)
+        await yearDocRef.set({ year })
+
+        const doc = messagesByYearCollectionRef.get()
     
         if (doc.exists) {
           await messagesByYearCollectionRef.update({
@@ -153,3 +159,5 @@ exports.groupStoredMessagesByYearAndMonth = async () => {
     console.log('Error fetching messages:', error)
   }
 }
+
+groupStoredMessagesByYearAndMonth()
