@@ -1,6 +1,6 @@
 require('dotenv').config()
 const tmi = require('tmi.js')
-const { logMessage, groupMessage } = require('./utils')
+const { logMessage, groupMessage, groupMessageByYearAndMonth } = require('./utils')
 
 // Create a client with options
 const client = new tmi.client({
@@ -13,6 +13,7 @@ client.on('message', (channel, tags, message, self) => {
   if (process.env.USER === tags.username) {
     logMessage(tags, message)
     groupMessage(tags, message)
+    groupMessageByYearAndMonth(tags, message)
   }
 })
 
