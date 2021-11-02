@@ -124,7 +124,7 @@ exports.groupStoredMessages = async () => {
   }
 }
 
-const groupStoredMessagesByYearAndMonth = async () => {
+exports.groupStoredMessagesByYearAndMonth = async () => {
   const messagesCollectionRef = db.collection('messages')
   try {
     const messagesSnapshot = await messagesCollectionRef.get()
@@ -140,13 +140,14 @@ const groupStoredMessagesByYearAndMonth = async () => {
         const yearDocRef = db.collection('messagesByYear').doc(year)
         await yearDocRef.set({ year })
 
-        const doc = messagesByYearCollectionRef.get()
+        const doc = await messagesByYearCollectionRef.get()
     
         if (doc.exists) {
           await messagesByYearCollectionRef.update({
             messages: admin.firestore.FieldValue.arrayUnion(messageData)
           })
         } else {
+
           await messagesByYearCollectionRef.set({
             messages: admin.firestore.FieldValue.arrayUnion(messageData)
           })
@@ -159,5 +160,3 @@ const groupStoredMessagesByYearAndMonth = async () => {
     console.log('Error fetching messages:', error)
   }
 }
-
-groupStoredMessagesByYearAndMonth()
