@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "group": "node src/utils/groupStoredMessages.js"
+    "group": "node src/utils/groupMessageByYearAndMonth.js"
   },
   "repository": {
     "type": "git",
