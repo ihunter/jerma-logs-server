@@ -14,15 +14,15 @@ const client = new tmi.client({
 
 // Register event handlers
 client.on("message", (channel, tags, message, self) => {
-  if (tags.username === 'moduspwnens') {
-    console.log(`${tags.username}: ${message}`)
+  if (tags.username === "moduspwnens") {
+    console.log(`${tags.username}: ${message}`);
   }
+
+  if (tags.username !== process.env.USER) return;
   
-  if (process.env.USER === tags.username) {
-    logMessage(tags, message);
-    groupMessage(tags, message);
-    groupMessageByYearAndMonth(tags, message);
-  }
+  logMessage(tags, message);
+  groupMessage(tags, message);
+  groupMessageByYearAndMonth(tags, message);
 });
 
 // Connection events
