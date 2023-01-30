@@ -29,7 +29,7 @@ exports.formatMessage = (tags, message) => {
 
 exports.logSus = async (messageData) => {
   console.log("Possible sus update")
-  const susRegExp = new RegExp(/^!commands\sedit\s(-cd=\d+\s)?!sus/);
+  const susRegExp = new RegExp(/^!(commands\sedit|editcom)\s(-(cd|ul|a)=\w+\s)*?!sus\s.+/);
   if (messageData.message.match(susRegExp) === null) {
     console.log("No sus message found with regex:", messageData.message)
     return
