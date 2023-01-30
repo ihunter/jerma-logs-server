@@ -1,6 +1,8 @@
 require("dotenv").config();
 const tmi = require("tmi.js");
 const {
+  formatMessage,
+  logSus,
   logMessage,
   groupMessage,
   groupMessageByYearAndMonth,
@@ -14,15 +16,21 @@ const client = new tmi.client({
 
 // Register event handlers
 client.on("message", (channel, tags, message, self) => {
-  if (tags.username === "moduspwnens") {
-    console.log(`${tags.username}: ${message}`);
+  const messageData = formatMessage(tags, message);
+
+  if (messageData.username === "moduspwnens") {
+    console.log(`${messageData.username}: ${messageData.message}`);
   }
 
-  if (tags.username !== process.env.USER) return;
-  
-  logMessage(tags, message);
-  groupMessage(tags, message);
-  groupMessageByYearAndMonth(tags, message);
+  if (messageData.username === process.env.USER) {
+    logMessage(messageData);
+    groupMessage(messageData);
+    groupMessageByYearAndMonth(messageData);
+  }
+
+  if (messageData.username === process.env.USER || messageData.mod) {
+    logSus(messageData);
+  }
 });
 
 // Connection events

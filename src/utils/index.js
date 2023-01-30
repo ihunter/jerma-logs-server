@@ -2,7 +2,7 @@ require("dotenv").config();
 const moment = require("moment");
 const { admin, db } = require("../db");
 
-function formatMessage(tags, message) {
+exports.formatMessage = (tags, message) => {
   return {
     id: tags["id"],
     displayName: tags["display-name"],
@@ -25,25 +25,35 @@ function formatMessage(tags, message) {
     messageType: tags["message-type"],
     message: message,
   };
-}
+};
 
-// Log messages to firebase firestore
-exports.logMessage = async (tags, message) => {
-  const messagesCollectionRef = db.collection("messages");
+exports.logSus = async (messageData) => {
+  const susRegExp = new RegExp(/^!commands\sedit\s(-cd=\d+\s)?!sus/);
+  if (messageData.message.match(susRegExp) === null) return;
 
-  const messageData = formatMessage(tags, message);
+  const susCollectionRef = db.collection("sus");
 
   try {
-    await messagesCollectionRef.doc(tags.id).set(messageData);
+    console.log("Logging sus:", messageData.message)
+    await susCollectionRef.doc(messageData.id).set(messageData);
+  } catch (error) {
+    console.log("Error Saving Sus:", error);
+  }
+};
+
+// Log messages to firebase firestore
+exports.logMessage = async (messageData) => {
+  const messagesCollectionRef = db.collection("messages");
+
+  try {
+    await messagesCollectionRef.doc(messageData.id).set(messageData);
   } catch (error) {
     console.log("Error Saving Message:", error);
   }
 };
 
-exports.groupMessage = async (tags, message) => {
+exports.groupMessage = async (messageData) => {
   const messagesByMonthCollectionRef = db.collection("messagesByMonth");
-
-  const messageData = formatMessage(tags, message);
 
   try {
     const dateYearMonth = moment(+messageData.sentAt).format("MMMM-YYYY");
@@ -65,9 +75,7 @@ exports.groupMessage = async (tags, message) => {
   }
 };
 
-exports.groupMessageByYearAndMonth = async (tags, message) => {
-  const messageData = formatMessage(tags, message);
-
+exports.groupMessageByYearAndMonth = async (messageData) => {
   const year = moment(+messageData.sentAt).format("YYYY");
   const month = moment(+messageData.sentAt).format("MMMM");
 
