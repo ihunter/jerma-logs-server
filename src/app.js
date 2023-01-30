@@ -28,7 +28,7 @@ client.on("message", (channel, tags, message, self) => {
     groupMessageByYearAndMonth(messageData);
   }
 
-  if (messageData.username === process.env.USER || (messageData.mod && message.username !== "nightbot")) {
+  if (messageData.username === process.env.USER || (messageData.mod && messageData.username !== "nightbot")) {
     logSus(messageData);
   }
 });
