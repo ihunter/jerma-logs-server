@@ -28,8 +28,12 @@ exports.formatMessage = (tags, message) => {
 };
 
 exports.logSus = async (messageData) => {
+  console.log("Possible sus update")
   const susRegExp = new RegExp(/^!commands\sedit\s(-cd=\d+\s)?!sus/);
-  if (messageData.message.match(susRegExp) === null) return;
+  if (messageData.message.match(susRegExp) === null) {
+    console.log("No sus message found with regex:", messageData.message)
+    return
+  };
 
   const susCollectionRef = db.collection("sus");
 
