@@ -14,6 +14,8 @@ const client = new tmi.client({
   channels: [process.env.CHANNEL],
 });
 
+let sus = false
+
 // Register event handlers
 client.on("message", (channel, tags, message, self) => {
   const messageData = formatMessage(tags, message);
@@ -28,8 +30,19 @@ client.on("message", (channel, tags, message, self) => {
     groupMessageByYearAndMonth(messageData);
   }
 
-  if (messageData.username === process.env.USER || (messageData.mod && messageData.username !== "nightbot")) {
+  // if (messageData.username === process.env.USER || (messageData.mod && messageData.username !== "nightbot")) {
+  //   logSus(messageData);
+  // }
+
+  if (messageData.mod && messageData.username === "nightbot" && sus) {
+    console.log("SUS =", messageData.message)
     logSus(messageData);
+    sus = false
+  }
+
+  if (messageData.message === "!sus") {
+    console.log("SUS! was cast")
+    sus = true
   }
 });
 
