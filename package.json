@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "group": "node src/utils/groupMessageByYearAndMonth.js"
+    "group": "node src/utils/groupMessageByYearAndMonth.js",
+    "deploy": "flyctl deploy -a jerma-logs"
   },
   "repository": {
     "type": "git",
