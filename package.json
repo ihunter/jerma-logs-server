@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
-    "group": "node src/utils/groupMessageByYearAndMonth.js",
+    "start": "node dist/app.js",
+    "dev": "nodemon dist/app.js",
+    "build": "tsc",
+    "group": "node dist/utils/groupMessageByYearAndMonth.js",
     "deploy": "flyctl deploy -a jerma-logs"
   },
   "repository": {
@@ -27,6 +28,7 @@
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
+    "@types/tmi.js": "^1.8.6",
     "nodemon": "^3.0.2"
   }
 }

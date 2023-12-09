@@ -2,3 +2,4 @@ node_modules
 .env
 fly.toml
 dist
+service-accout.json.json
