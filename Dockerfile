@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:1
+
 ARG NODE_VERSION=20.10.0
 FROM node:${NODE_VERSION}-slim as base
 
@@ -16,6 +18,7 @@ RUN apt-get update -qq && \
 
 # Install node modules
 COPY --link package-lock.json package.json ./
+COPY --link tsconfig.json ./
 RUN npm ci --include=dev
 
 # Copy application code
