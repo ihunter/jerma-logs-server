@@ -1,18 +1,18 @@
-require("dotenv").config();
-const tmi = require("tmi.js");
-const {
+import "dotenv/config";
+import tmi from "tmi.js";
+
+import {
   formatMessage,
   logSus,
   logMessage,
   logTestMessage,
   groupMessage,
   groupMessageByYearAndMonth,
-} = require("./utils");
+} from "./utils";
 
 // Create a client with options
 const client = new tmi.client({
-  skipMembership: true,
-  channels: [process.env.CHANNEL],
+  channels: [process.env.CHANNEL || "jerma985"],
 });
 
 // Register event handlers

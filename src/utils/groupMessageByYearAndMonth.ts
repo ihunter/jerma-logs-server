@@ -1,9 +1,9 @@
-const { groupStoredMessagesByYearAndMonth } = require("./index");
+import { groupStoredMessagesByYearAndMonth } from "./index";
 
 groupStoredMessagesByYearAndMonth()
   .then(() => {
     console.log("Done");
   })
-  .catch((err) => {
+  .catch((err: any) => {
     console.log(err);
   });

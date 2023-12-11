@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
-    "group": "node src/utils/groupMessageByYearAndMonth.js",
+    "start": "node dist/app.js",
+    "dev": "nodemon dist/app.js",
+    "build": "tsc",
+    "group": "node dist/utils/groupMessageByYearAndMonth.js",
     "deploy": "flyctl deploy -a jerma-logs"
   },
   "repository": {
@@ -21,12 +22,14 @@
   "homepage": "https://github.com/ihunter/jerma-logs-server#readme",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "firebase": "^10.6.0",
-    "firebase-admin": "^11.11.0",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^12.0.0",
     "moment": "^2.29.4",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@types/tmi.js": "^1.8.6",
+    "nodemon": "^3.0.2",
+    "typescript": "^5.3.3"
   }
 }

@@ -1,8 +1,12 @@
-require("dotenv").config();
-const moment = require("moment");
-const { admin, db } = require("../db");
+import "dotenv/config";
+import moment from "moment";
+import tmi from "tmi.js";
+import { db } from "../db";
+import { FieldValue } from "firebase-admin/firestore";
 
-exports.formatMessage = (tags, message) => {
+type MessageData = ReturnType<typeof formatMessage>;
+
+function formatMessage(tags: tmi.ChatUserstate, message: string) {
   return {
     id: tags["id"],
     displayName: tags["display-name"],
@@ -25,9 +29,9 @@ exports.formatMessage = (tags, message) => {
     messageType: tags["message-type"],
     message: message,
   };
-};
+}
 
-exports.logSus = async (messageData) => {
+async function logSus(messageData: MessageData) {
   const susRegExp = new RegExp(
     /^!(commands\sedit|editcom)\s(-(cd|ul|a)=\w+\s)*?!sus\s.+/
   );
@@ -37,60 +41,66 @@ exports.logSus = async (messageData) => {
 
   try {
     console.log("Logging sus:", messageData.message);
+    if (!messageData.id) throw new TypeError("Message ID undefined");
     await susCollectionRef.doc(messageData.id).set(messageData);
   } catch (error) {
     console.log("Error Saving Sus:", error);
   }
-};
+}
 
 // Log messages to firebase firestore
-exports.logMessage = async (messageData) => {
+async function logMessage(messageData: MessageData) {
   const messagesCollectionRef = db.collection("messages");
 
   try {
+    if (!messageData.id) throw new TypeError("Message ID undefined");
     await messagesCollectionRef.doc(messageData.id).set(messageData);
   } catch (error) {
     console.log("Error Saving Message:", error);
   }
-};
+}
 
-// Log messages to firebase firestore
-exports.logTestMessage = async (messageData) => {
+async function logTestMessage(messageData: MessageData) {
   const messagesCollectionRef = db.collection("testMessages");
 
   try {
+    if (!messageData.id) throw new TypeError("Message ID undefined");
     await messagesCollectionRef.doc(messageData.id).set(messageData);
   } catch (error) {
     console.log("Error Saving Message:", error);
   }
-};
+}
 
-exports.groupMessage = async (messageData) => {
+async function groupMessage(messageData: MessageData) {
   const messagesByMonthCollectionRef = db.collection("messagesByMonth");
 
   try {
-    const dateYearMonth = moment(+messageData.sentAt).format("MMMM-YYYY");
+    if (!messageData.sentAt) throw new TypeError("Message sentAt undefined");
+    const dateYearMonth = moment(parseInt(messageData.sentAt)).format(
+      "MMMM-YYYY"
+    );
     const groupDoc = await messagesByMonthCollectionRef
       .doc(dateYearMonth)
       .get();
 
     if (groupDoc.exists) {
       await messagesByMonthCollectionRef.doc(dateYearMonth).update({
-        messages: admin.firestore.FieldValue.arrayUnion(messageData),
+        messages: FieldValue.arrayUnion(messageData),
       });
     } else {
       await messagesByMonthCollectionRef.doc(dateYearMonth).set({
-        messages: admin.firestore.FieldValue.arrayUnion(messageData),
+        messages: FieldValue.arrayUnion(messageData),
       });
     }
   } catch (error) {
     console.log("Error Grouping Message:", error);
   }
-};
+}
 
-exports.groupMessageByYearAndMonth = async (messageData) => {
-  const year = moment(+messageData.sentAt).format("YYYY");
-  const month = moment(+messageData.sentAt).format("MMMM");
+async function groupMessageByYearAndMonth(messageData: MessageData) {
+  if (!messageData.sentAt) throw new TypeError("Message sentAt undefined");
+  const year = moment(parseInt(messageData.sentAt)).format("YYYY");
+  const month = moment(parseInt(messageData.sentAt)).format("MMMM");
 
   const messagesByYearAndMonthCollectionRef = db
     .collection("messagesByYear")
@@ -106,19 +116,19 @@ exports.groupMessageByYearAndMonth = async (messageData) => {
 
     if (groupDoc.exists) {
       await messagesByYearAndMonthCollectionRef.update({
-        messages: admin.firestore.FieldValue.arrayUnion(messageData),
+        messages: FieldValue.arrayUnion(messageData),
       });
     } else {
       await messagesByYearAndMonthCollectionRef.set({
-        messages: admin.firestore.FieldValue.arrayUnion(messageData),
+        messages: FieldValue.arrayUnion(messageData),
       });
     }
   } catch (error) {
     console.log("Error Grouping Message:", error);
   }
-};
+}
 
-exports.groupStoredMessages = async () => {
+async function groupStoredMessages() {
   const messagesCollectionRef = db.collection("messages");
   const messagesByMonthCollectionRef = db.collection("messagesByMonth");
 
@@ -127,7 +137,9 @@ exports.groupStoredMessages = async () => {
 
     messagesSnapshot.forEach(async (messageDoc) => {
       const messageData = messageDoc.data();
-      const dateYearMonth = moment(+messageData.sentAt).format("MMMM-YYYY");
+      const dateYearMonth = moment(parseInt(messageData.sentAt)).format(
+        "MMMM-YYYY"
+      );
 
       try {
         const groupDoc = await messagesByMonthCollectionRef
@@ -136,11 +148,11 @@ exports.groupStoredMessages = async () => {
 
         if (groupDoc.exists) {
           await messagesByMonthCollectionRef.doc(dateYearMonth).update({
-            messages: admin.firestore.FieldValue.arrayUnion(messageData),
+            messages: FieldValue.arrayUnion(messageData),
           });
         } else {
           await messagesByMonthCollectionRef.doc(dateYearMonth).set({
-            messages: admin.firestore.FieldValue.arrayUnion(messageData),
+            messages: FieldValue.arrayUnion(messageData),
           });
         }
       } catch (error) {
@@ -150,17 +162,18 @@ exports.groupStoredMessages = async () => {
   } catch (error) {
     console.log("Error fetching messages:", error);
   }
-};
+}
 
-exports.groupStoredMessagesByYearAndMonth = async () => {
+async function groupStoredMessagesByYearAndMonth() {
   const messagesCollectionRef = db.collection("messages");
   try {
     const messagesSnapshot = await messagesCollectionRef.get();
 
     messagesSnapshot.forEach(async (messageDoc) => {
       const messageData = messageDoc.data();
-      const year = moment(+messageData.sentAt).format("YYYY");
-      const month = moment(+messageData.sentAt).format("MMMM");
+      if (!messageData.sentAt) throw new TypeError("Message sentAt undefined");
+      const year = moment(parseInt(messageData.sentAt)).format("YYYY");
+      const month = moment(parseInt(messageData.sentAt)).format("MMMM");
 
       const messagesByYearCollectionRef = db
         .collection("messagesByYear")
@@ -176,11 +189,11 @@ exports.groupStoredMessagesByYearAndMonth = async () => {
 
         if (doc.exists) {
           await messagesByYearCollectionRef.update({
-            messages: admin.firestore.FieldValue.arrayUnion(messageData),
+            messages: FieldValue.arrayUnion(messageData),
           });
         } else {
           await messagesByYearCollectionRef.set({
-            messages: admin.firestore.FieldValue.arrayUnion(messageData),
+            messages: FieldValue.arrayUnion(messageData),
           });
         }
       } catch (error) {
@@ -190,4 +203,15 @@ exports.groupStoredMessagesByYearAndMonth = async () => {
   } catch (error) {
     console.log("Error fetching messages:", error);
   }
+}
+
+export {
+  formatMessage,
+  logSus,
+  logMessage,
+  logTestMessage,
+  groupMessage,
+  groupMessageByYearAndMonth,
+  groupStoredMessages,
+  groupStoredMessagesByYearAndMonth,
 };
