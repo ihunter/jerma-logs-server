@@ -28,13 +28,15 @@ exports.formatMessage = (tags, message) => {
 };
 
 exports.logSus = async (messageData) => {
-  const susRegExp = new RegExp(/^!(commands\sedit|editcom)\s(-(cd|ul|a)=\w+\s)*?!sus\s.+/);
-  if (messageData.message.match(susRegExp) === null) return
+  const susRegExp = new RegExp(
+    /^!(commands\sedit|editcom)\s(-(cd|ul|a)=\w+\s)*?!sus\s.+/
+  );
+  if (messageData.message.match(susRegExp) === null) return;
 
   const susCollectionRef = db.collection("sus");
 
   try {
-    console.log("Logging sus:", messageData.message)
+    console.log("Logging sus:", messageData.message);
     await susCollectionRef.doc(messageData.id).set(messageData);
   } catch (error) {
     console.log("Error Saving Sus:", error);
@@ -44,6 +46,17 @@ exports.logSus = async (messageData) => {
 // Log messages to firebase firestore
 exports.logMessage = async (messageData) => {
   const messagesCollectionRef = db.collection("messages");
+
+  try {
+    await messagesCollectionRef.doc(messageData.id).set(messageData);
+  } catch (error) {
+    console.log("Error Saving Message:", error);
+  }
+};
+
+// Log messages to firebase firestore
+exports.logTestMessage = async (messageData) => {
+  const messagesCollectionRef = db.collection("testMessages");
 
   try {
     await messagesCollectionRef.doc(messageData.id).set(messageData);

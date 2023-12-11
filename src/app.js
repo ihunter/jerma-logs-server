@@ -4,6 +4,7 @@ const {
   formatMessage,
   logSus,
   logMessage,
+  logTestMessage,
   groupMessage,
   groupMessageByYearAndMonth,
 } = require("./utils");
@@ -20,6 +21,7 @@ client.on("message", (channel, tags, message, self) => {
 
   if (messageData.username === "moduspwnens") {
     console.log(`${messageData.username}: ${messageData.message}`);
+    logTestMessage(messageData);
   }
 
   if (messageData.username === process.env.USER) {
@@ -28,7 +30,10 @@ client.on("message", (channel, tags, message, self) => {
     groupMessageByYearAndMonth(messageData);
   }
 
-  if (messageData.username === process.env.USER || (messageData.mod && messageData.username !== "nightbot")) {
+  if (
+    messageData.username === process.env.USER ||
+    (messageData.mod && messageData.username !== "nightbot")
+  ) {
     logSus(messageData);
   }
 });
