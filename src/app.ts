@@ -5,6 +5,7 @@ import {
   formatMessage,
   logSus,
   logMessage,
+  logTestMessage,
   groupMessage,
   groupMessageByYearAndMonth,
 } from "./utils";
@@ -20,6 +21,7 @@ client.on("message", (channel, tags, message, self) => {
 
   if (messageData.username === "moduspwnens") {
     console.log(`${messageData.username}: ${messageData.message}`);
+    logTestMessage(messageData);
   }
 
   if (messageData.username === process.env.USER) {

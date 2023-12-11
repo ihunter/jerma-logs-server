@@ -60,6 +60,17 @@ async function logMessage(messageData: MessageData) {
   }
 }
 
+async function logTestMessage(messageData: MessageData) {
+  const messagesCollectionRef = db.collection("testMessages");
+
+  try {
+    if (!messageData.id) throw new TypeError("Message ID undefined");
+    await messagesCollectionRef.doc(messageData.id).set(messageData);
+  } catch (error) {
+    console.log("Error Saving Message:", error);
+  }
+}
+
 async function groupMessage(messageData: MessageData) {
   const messagesByMonthCollectionRef = db.collection("messagesByMonth");
 
@@ -198,6 +209,7 @@ export {
   formatMessage,
   logSus,
   logMessage,
+  logTestMessage,
   groupMessage,
   groupMessageByYearAndMonth,
   groupStoredMessages,
