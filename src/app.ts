@@ -40,11 +40,11 @@ client.on("message", (channel, tags, message, self) => {
 
 // Connection events
 client.on("connecting", (address, port) => {
-  console.log("Connecting:", address, port);
+  console.log("Connecting:", process.env.CHANNEL, address, port);
 });
 
 client.on("connected", (address, port) => {
-  console.log("Connected:", address, port);
+  console.log("Connected:", process.env.CHANNEL, address, port);
 });
 
 client.on("disconnected", (reason) => {

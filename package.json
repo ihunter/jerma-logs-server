@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon dist/app.js",
+    "dev": "nodemon src/app.ts",
     "build": "tsc",
     "group": "node dist/utils/groupMessageByYearAndMonth.js",
     "deploy": "flyctl deploy -a jerma-logs"
@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/tmi.js": "^1.8.6",
     "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
   }
 }
