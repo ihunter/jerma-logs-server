@@ -1,4 +1,4 @@
 node_modules
 .env
 dist
-service-accout.json.json
+service-accout.json
