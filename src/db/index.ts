@@ -1,14 +1,15 @@
-import "dotenv/config";
-import { initializeApp, cert } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import process from 'node:process'
+import { cert, initializeApp } from 'firebase-admin/app'
+import { getFirestore } from 'firebase-admin/firestore'
+import 'dotenv/config'
 
-const serviceAccount = JSON.parse(process.env.GOOGLE_CREDS!);
+const serviceAccount = JSON.parse(process.env.GOOGLE_CREDS!)
 
 const app = initializeApp({
   credential: cert(serviceAccount),
   databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`,
-});
+})
 
-const db = getFirestore(app);
+const db = getFirestore(app)
 
-export { db };
+export { db }

@@ -1,59 +1,63 @@
-import "dotenv/config";
-import tmi from "tmi.js";
-
+import process from 'node:process'
+import tmi from 'tmi.js'
 import {
   formatMessage,
-  logSus,
-  logMessage,
-  logTestMessage,
   groupMessage,
   groupMessageByYearAndMonth,
-} from "./utils";
+  logMessage,
+  logSus,
+  logTestMessage,
+} from './utils'
+
+import 'dotenv/config'
 
 // Create a client with options
-const client = new tmi.client({
-  channels: [process.env.CHANNEL || "jerma985"],
-});
+const client = new tmi.Client({
+  channels: [process.env.CHANNEL || 'jerma985'],
+})
 
 // Register event handlers
-client.on("message", (channel, tags, message, self) => {
-  const messageData = formatMessage(tags, message);
+client.on('message', (_channel, tags, message, _self) => {
+  const messageData = formatMessage(tags, message)
 
-  if (messageData.username === "moduspwnens") {
-    console.log(`${messageData.username}: ${messageData.message}`);
-    logTestMessage(messageData);
+  if (messageData.username === 'moduspwnens') {
+    logTestMessage(messageData)
   }
 
   if (messageData.username === process.env.USER) {
-    logMessage(messageData);
-    groupMessage(messageData);
-    groupMessageByYearAndMonth(messageData);
+    logMessage(messageData)
+    groupMessage(messageData)
+    groupMessageByYearAndMonth(messageData)
   }
 
   if (
-    messageData.username === process.env.USER ||
-    (messageData.mod && messageData.username !== "nightbot")
+    messageData.username === process.env.USER
+    || (messageData.mod && messageData.username !== 'nightbot')
   ) {
-    logSus(messageData);
+    logSus(messageData)
   }
-});
+})
 
 // Connection events
-client.on("connecting", (address, port) => {
-  console.log("Connecting:", process.env.CHANNEL, address, port);
-});
+client.on('connecting', (address, port) => {
+  // eslint-disable-next-line no-console
+  console.log('Connecting:', process.env.CHANNEL, address, port)
+})
 
-client.on("connected", (address, port) => {
-  console.log("Connected:", process.env.CHANNEL, address, port);
-});
+client.on('connected', (address, port) => {
+  // eslint-disable-next-line no-console
+  console.log('Connected:', process.env.CHANNEL, address, port)
+})
 
-client.on("disconnected", (reason) => {
-  console.log("Disconnected:", reason);
-});
+client.on('disconnected', (reason) => {
+  // eslint-disable-next-line no-console
+  console.log('Disconnected:', reason)
+})
 
-client.on("reconnect", () => {
-  console.log("Attempting to reconnect");
-});
+client.on('reconnect', () => {
+  // eslint-disable-next-line no-console
+  console.log('Attempting to reconnect')
+})
 
 // Connect to Twitch
-client.connect();
+client.connect()

@@ -2,24 +2,26 @@
   "name": "jerma-logs-server",
   "version": "1.0.0",
   "description": "",
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/ihunter/jerma-logs-server#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihunter/jerma-logs-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ihunter/jerma-logs-server/issues"
+  },
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "build": "tsc",
     "group": "node dist/utils/groupMessageByYearAndMonth.js",
-    "deploy": "flyctl deploy -a jerma-logs"
+    "deploy": "flyctl deploy -a jerma-logs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ihunter/jerma-logs-server.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ihunter/jerma-logs-server/issues"
-  },
-  "homepage": "https://github.com/ihunter/jerma-logs-server#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
     "firebase": "^10.13.2",
@@ -28,7 +30,9 @@
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^3.7.1",
     "@types/tmi.js": "^1.8.6",
+    "eslint": "^9.11.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
