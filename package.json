@@ -32,7 +32,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^3.7.1",
     "@types/tmi.js": "^1.8.6",
-    "eslint": "^9.11.0",
+    "eslint": "^9.11.1",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
