@@ -12,4 +12,8 @@ const app = initializeApp({
 
 const db = getFirestore(app)
 
+db.settings({
+  ignoreUndefinedProperties: true,
+})
+
 export { db }
