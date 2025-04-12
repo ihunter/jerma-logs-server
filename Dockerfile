@@ -1,4 +1,4 @@
-FROM node:20.16.0-slim as base
+FROM node:22.14.0-slim as base
 
 # Node.js app lives here
 WORKDIR /usr/src/app
