@@ -6,7 +6,25 @@ import 'dotenv/config'
 
 type MessageData = ReturnType<typeof formatMessage>
 
-function formatMessage(tags: tmi.ChatUserstate, message: string) {
+interface TmiTags extends tmi.ChatUserstate {
+  reply?: {
+    parent: {
+      displayName: string
+      msgBody: string
+      msgID: string
+      userID: string
+      userLogin: string
+    }
+    threadParent: {
+      displayName: string
+      msgID: string
+      userID: string
+      userLogin: string
+    }
+  }
+}
+
+function formatMessage(tags: TmiTags, message: string) {
   return {
     id: tags.id,
     displayName: tags['display-name'],
@@ -28,6 +46,21 @@ function formatMessage(tags: tmi.ChatUserstate, message: string) {
     badgesRaw: tags['badges-raw'],
     messageType: tags['message-type'],
     message,
+    reply: {
+      parent: {
+        displayName: tags['reply-parent-display-name'],
+        msgBody: tags['reply-parent-msg-body'],
+        msgID: tags['reply-parent-msg-id'],
+        userID: tags['reply-parent-user-id'],
+        userLogin: tags['reply-parent-user-login'],
+      },
+      threadParent: {
+        displayName: tags['reply-thread-parent-display-name'],
+        msgID: tags['reply-thread-parent-msg-id'],
+        userID: tags['reply-thread-parent-user-id'],
+        userLogin: tags['reply-thread-parent-user-login'],
+      },
+    },
   }
 }
 
