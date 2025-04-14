@@ -254,7 +254,40 @@ async function groupStoredMessagesByYearAndMonth() {
   }
 }
 
+async function deleteMessagesByUsername(username: string) {
+  const messagesCollectionRef = db.collection('messages')
+  const q = messagesCollectionRef.where('username', '==', username)
+
+  const snapshot = await q.get()
+
+  if (snapshot.empty)
+    return
+
+  const batchSize = 500
+
+  let batch = db.batch()
+  let count = 0
+
+  for (const doc of snapshot.docs) {
+    batch.delete(doc.ref)
+    count++
+
+    if (count % batchSize === 0) {
+      await batch.commit()
+      batch = db.batch()
+    }
+  }
+
+  if (count % batchSize !== 0) {
+    await batch.commit()
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(`Deleted ${count} document(s) from messages.`)
+}
+
 export {
+  deleteMessagesByUsername,
   formatMessage,
   groupMessage,
   groupMessageByYearAndMonth,
