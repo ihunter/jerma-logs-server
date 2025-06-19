@@ -13,6 +13,10 @@ import 'dotenv/config'
 
 // Create a client with options
 const client = new tmi.Client({
+  connection: {
+    reconnect: true,
+    secure: true,
+  },
   channels: [process.env.CHANNEL || 'jerma985'],
 })
 
