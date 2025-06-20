@@ -4,7 +4,37 @@ import moment from 'moment'
 import { db } from '../db'
 import 'dotenv/config'
 
-type MessageData = ReturnType<typeof formatMessage>
+interface MessageData {
+  id: string
+  message: string
+  sentAt: string
+
+  badgeInfo: {
+    subscriber: string
+  }
+  badgeInfoRaw: string
+  badges: {
+    broadcaster: string
+    moments: string
+    subscriber: string
+  }
+  badgesRaw: string
+  color: string
+  displayName: string
+  emotes?: {
+    [emoteid: string]: string[]
+  }
+  emotesRaw?: string
+  flags?: string
+  messageType: string
+  mod: boolean
+  roomID: string
+  subscriber: boolean
+  turbo: boolean
+  userID: string
+  userType?: string
+  username: string
+}
 
 interface TmiTags extends tmi.ChatUserstate {
   reply?: {
