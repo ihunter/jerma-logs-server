@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { logMessage, logTestMessage } from './index'
+import { logMessage } from './index'
 
 const defaultInfo = {
   badgeInfo: {
@@ -37,61 +37,62 @@ const messages = [
   },
   {
     id: '1750332108',
-    sentAt: '1750332108000',
+    sentAt: '1750306908000',
     message: 'just a heads up, vod from yesterday is coming down',
 
     ...defaultInfo,
   },
   {
     id: '1750332129',
-    sentAt: '1750332129000',
-    message: ' i highlighted the dracula 3 part, it has chat and is good, but the sponsor part is comin out',
+    sentAt: '1750306929000',
+    message: 'i highlighted the dracula 3 part, it has chat and is good, but the sponsor part is comin out',
 
     ...defaultInfo,
   },
   {
     id: '1750332162',
-    sentAt: '1750332162000',
+    sentAt: '1750306962000',
     message: 'everythings all good, dont worry',
 
     ...defaultInfo,
   },
   {
     id: '1750332180',
-    sentAt: '1750332180000',
+    sentAt: '1750306980000',
     message: 'but if people are lookin for the vod, its on the highlight page',
 
     ...defaultInfo,
   },
   {
     id: '1750332204',
-    sentAt: '1750332204000',
+    sentAt: '1750307004000',
     message: 'can you guys confirm it is there ina  sec?',
 
     ...defaultInfo,
   },
   {
     id: '1750332271',
-    sentAt: '1750332271000',
+    sentAt: '1750307071000',
     message: 'vod should be gone',
 
     ...defaultInfo,
   },
   {
     id: '1750332281',
-    sentAt: '1750332281000',
+    sentAt: '1750307081000',
     message: 'highlight should be up with drac 3',
 
     ...defaultInfo,
   },
   {
     id: '1750332330',
-    sentAt: '1750332330000',
+    sentAt: '1750307130000',
     message: 'thanks guys, ill see ya Sunday!!!',
 
     ...defaultInfo,
   },
 ]
+
 async function uploadMessages(msgs: typeof messages) {
   const messagesPromiseArray = msgs.map((message) => {
     return logMessage(message)
