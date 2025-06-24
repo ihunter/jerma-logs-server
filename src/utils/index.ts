@@ -1,60 +1,10 @@
-import type tmi from 'tmi.js'
+import type { MessageData, TmiTags } from '../types'
 import { FieldValue } from 'firebase-admin/firestore'
 import moment from 'moment'
 import { db } from '../db'
 import 'dotenv/config'
 
-interface MessageData {
-  id: string
-  message: string
-  sentAt: string
-
-  badgeInfo: {
-    subscriber: string
-  }
-  badgeInfoRaw: string
-  badges: {
-    broadcaster: string
-    moments: string
-    subscriber: string
-  }
-  badgesRaw: string
-  color: string
-  displayName: string
-  emotes?: {
-    [emoteid: string]: string[]
-  }
-  emotesRaw?: string
-  flags?: string
-  messageType: string
-  mod: boolean
-  roomID: string
-  subscriber: boolean
-  turbo: boolean
-  userID: string
-  userType?: string
-  username: string
-}
-
-interface TmiTags extends tmi.ChatUserstate {
-  reply?: {
-    parent: {
-      displayName: string
-      msgBody: string
-      msgID: string
-      userID: string
-      userLogin: string
-    }
-    threadParent: {
-      displayName: string
-      msgID: string
-      userID: string
-      userLogin: string
-    }
-  }
-}
-
-function formatMessage(tags: TmiTags, message: string) {
+function formatMessage(tags: TmiTags, message: string): MessageData {
   return {
     id: tags.id,
     displayName: tags['display-name'],
@@ -95,7 +45,7 @@ function formatMessage(tags: TmiTags, message: string) {
 }
 
 async function logSus(messageData: MessageData) {
-  if (messageData.message.match(/^!(commands\sedit|editcom)\s(-(cd|ul|a)=\w+\s)*!sus\s.+/) === null)
+  if (messageData?.message?.match(/^!(commands\sedit|editcom)\s(-(cd|ul|a)=\w+\s)*!sus\s.+/) === null)
     return
 
   const susCollectionRef = db.collection('sus')
