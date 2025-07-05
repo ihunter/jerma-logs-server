@@ -23,16 +23,16 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "dotenv": "^17.0.0",
-    "firebase": "^11.9.1",
+    "dotenv": "^17.0.1",
+    "firebase": "^11.10.0",
     "firebase-admin": "^13.4.0",
     "moment": "^2.30.1",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.16.1",
+    "@antfu/eslint-config": "^4.16.2",
     "@types/tmi.js": "^1.8.6",
-    "eslint": "^9.30.0",
+    "eslint": "^9.30.1",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
