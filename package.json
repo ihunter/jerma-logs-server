@@ -23,7 +23,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "dotenv": "^17.0.1",
+    "dotenv": "^17.2.0",
     "firebase": "^11.10.0",
     "firebase-admin": "^13.4.0",
     "moment": "^2.30.1",
