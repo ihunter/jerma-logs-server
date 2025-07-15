@@ -49,6 +49,7 @@ COPY --from=build --chown=nodejs:nodejs /usr/src/app /usr/src/app
 # Switch to non-root user
 USER nodejs
 
-ENTRYPOINT ["dumb-init", "--"]
+EXPOSE $PORT
 
+ENTRYPOINT ["dumb-init", "--"]
 CMD [ "node", "dist/app.js" ]
