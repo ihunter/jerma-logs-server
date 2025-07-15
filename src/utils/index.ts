@@ -1,6 +1,6 @@
 import type { MessageData, TmiTags } from '../types'
+import dayjs from 'dayjs'
 import { FieldValue } from 'firebase-admin/firestore'
-import moment from 'moment'
 import { db } from '../db'
 import 'dotenv/config'
 
@@ -93,7 +93,7 @@ async function groupMessage(messageData: MessageData) {
   try {
     if (!messageData.sentAt)
       throw new TypeError('Message sentAt undefined')
-    const dateYearMonth = moment(Number.parseInt(messageData.sentAt)).format(
+    const dateYearMonth = dayjs(Number.parseInt(messageData.sentAt)).format(
       'MMMM-YYYY',
     )
     const groupDoc = await messagesByMonthCollectionRef
@@ -119,8 +119,8 @@ async function groupMessage(messageData: MessageData) {
 async function groupMessageByYearAndMonth(messageData: MessageData) {
   if (!messageData.sentAt)
     throw new TypeError('Message sentAt undefined')
-  const year = moment(Number.parseInt(messageData.sentAt)).format('YYYY')
-  const month = moment(Number.parseInt(messageData.sentAt)).format('MMMM')
+  const year = dayjs(Number.parseInt(messageData.sentAt)).format('YYYY')
+  const month = dayjs(Number.parseInt(messageData.sentAt)).format('MMMM')
 
   const messagesByYearAndMonthCollectionRef = db
     .collection('messagesByYear')
@@ -159,7 +159,7 @@ async function groupStoredMessages() {
 
     messagesSnapshot.forEach(async (messageDoc) => {
       const messageData = messageDoc.data()
-      const dateYearMonth = moment(Number.parseInt(messageData.sentAt)).format(
+      const dateYearMonth = dayjs(Number.parseInt(messageData.sentAt)).format(
         'MMMM-YYYY',
       )
 
@@ -198,8 +198,8 @@ async function groupStoredMessagesByYearAndMonth() {
       const messageData = messageDoc.data()
       if (!messageData.sentAt)
         throw new TypeError('Message sentAt undefined')
-      const year = moment(Number.parseInt(messageData.sentAt)).format('YYYY')
-      const month = moment(Number.parseInt(messageData.sentAt)).format('MMMM')
+      const year = dayjs(Number.parseInt(messageData.sentAt)).format('YYYY')
+      const month = dayjs(Number.parseInt(messageData.sentAt)).format('MMMM')
 
       const messagesByYearCollectionRef = db
         .collection('messagesByYear')
