@@ -1,10 +1,11 @@
 FROM node:22.16.0-slim AS base
 
+ARG PORT=3000
+ENV PORT=$PORT
+ENV NODE_ENV=production
+
 # Node.js app lives here
 WORKDIR /usr/src/app
-
-# Set production environment
-ENV NODE_ENV="production"
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
