@@ -30,8 +30,8 @@ client.on('message', (_channel, tags, message, _self) => {
 
   if (messageData.username === process.env.USER) {
     logMessage(messageData)
-    groupMessage(messageData)
-    groupMessageByYearAndMonth(messageData)
+    // groupMessage(messageData)
+    // groupMessageByYearAndMonth(messageData)
   }
 
   if (
