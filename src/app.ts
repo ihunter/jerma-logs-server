@@ -2,8 +2,6 @@ import process from 'node:process'
 import tmi from 'tmi.js'
 import {
   formatMessage,
-  groupMessage,
-  groupMessageByYearAndMonth,
   logMessage,
   logSus,
   logTestMessage,
@@ -30,8 +28,6 @@ client.on('message', (_channel, tags, message, _self) => {
 
   if (messageData.username === process.env.USER) {
     logMessage(messageData)
-    // groupMessage(messageData)
-    // groupMessageByYearAndMonth(messageData)
   }
 
   if (
